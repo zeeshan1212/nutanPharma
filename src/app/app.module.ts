@@ -46,6 +46,8 @@ import { MedicineComponent } from './views/medicine/medicine.component';
 import { OrdersComponent } from './views/orders/orders.component';
 import { BrandComponent } from './views/brand/brand.component';
 import { CategoriesComponent } from './views/categories/categories.component';
+import { ReportsComponent } from './views/reports/reports.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -63,6 +65,7 @@ import { CategoriesComponent } from './views/categories/categories.component';
     ChartsModule,
     IconModule,
     IconSetModule.forRoot(),
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
@@ -71,6 +74,7 @@ import { CategoriesComponent } from './views/categories/categories.component';
     P500Component,
     LoginComponent,
     RegisterComponent,
+    ReportsComponent,
 
   ],
   providers: [

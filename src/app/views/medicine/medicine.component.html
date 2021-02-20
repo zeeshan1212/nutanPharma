@@ -1,16 +1,171 @@
+
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header card-header">
+        <h4 class="modal-title ">Add New Medicine</h4>
+        <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="medicineAddForm" [formGroup]="medicineAddForm">
+        <div class="form-group row" style="margin: 20px">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="date-input">Date</label>
+              <input
+                class="form-control"
+                id="date-input"
+                type="date"
+                name="date-input"
+                placeholder="date"
+                formControlName="date"
+              />
+            </div>
+            <div class="form-group">
+              <label for="company">Category</label>
+              <select
+                id="select1"
+                name="select1"
+                class="form-control"
+                formControlName="categories"
+                placeholder ="Select Categories"
+              >
+                <option [value]="category?.category" *ngFor="let category of categories">
+                  {{ category?.category }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="company">Packing</label>
+              <input
+                type="text"
+                class="form-control"
+                id="packing"
+                formControlName="packing"
+              />
+            </div>
+            <div class="form-group">
+              <label for="company">Expiry</label>
+              <input
+                type="date"
+                class="form-control"
+                id="expiry"
+                formControlName="expiry"
+              />
+            </div>
+            <div class="form-group">
+              <label for="company">Rate</label>
+              <input
+                type="text"
+                class="form-control"
+                id="rate"
+                placeholder=""
+                formControlName="rate"
+              />
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="company">Product Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="company"
+                placeholder="Product Name"
+                formControlName="productName"
+              />
+            </div>
+            <div class="form-group">
+              <label for="company">Brand</label>
+              <select
+                id="select1"
+                name="select1"
+                class="form-control"
+                formControlName="brand"
+              >
+                <option value="0">Select Brands</option>
+                <option [value]="brand?.brand" *ngFor="let brand of brands">{{brand?.brand}}</option>
+    
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="company">Batch No.</label>
+              <input
+                type="text"
+                class="form-control"
+                id="batch no"
+                formControlName="batchNo"
+              />
+            </div>
+            <div class="form-group">
+              <label for="company">Quantity</label>
+              <input
+                type="text"
+                class="form-control"
+                id="quantity"
+                formControlName="quantity"
+              />
+            </div>
+            <div class="form-group">
+              <label for="company">MRP</label>
+              <input
+                type="text"
+                class="form-control"
+                id="MRP"
+                formControlName="mrp"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button
+          type="submit"
+          class="btn btn-primary col-md-3"
+          (click)="submit()"
+          type="submit"
+          form:submit
+        >
+          <i class="fa fa-dot-circle-o"></i> Add
+        </button>
+        <button type="reset" class="btn btn-danger col-md-3" (click)= "reSet()">
+          <i class="fa fa-ban"></i> Reset
+        </button>
+        <button type="button" class="btn btn-secondary col-md-3" (click)="myModal.hide()">Close</button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="card">
   <div class="card-header">
     <h6>Available Medicines</h6>
   </div>
   <div class="card-body">
-      <div class="header row" style="margin-bottom: 20px;">
-        <div class="input-group col-md-3">
-            <input type="text" id="input1-group2" name="input1-group2" class="form-control" placeholder="Search Medicines">
-            <span class="input-group-append">
-                <button type="button" class="btn btn-primary btn-pill"><i class="fa fa-search"></i> Search</button>
-            </span>
-        </div>
+    <div class="header row" style="margin-bottom: 20px">
+      <div class="input-group col-md-3">
+        <input
+          type="text"
+          id="input1-group2"
+          name="input1-group2"
+          class="form-control"
+          placeholder="Search Medicines"
+        />
+        <span class="input-group-append">
+          <button type="button" class="btn btn-primary btn-pill">
+            <i class="fa fa-search"></i> Search
+          </button>
+        </span>
       </div>
+      <div class="col-md-3">
+        <button type="button" class="btn btn-secondary btn-pill mr-1" data-toggle="modal" (click)="myModal.show()">
+          Add New Medicine
+        </button>
+      </div>
+    </div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -27,40 +182,40 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Zandu Balm</td>
-          <td>50gm</td>
-          <td>gn1245</td>
-          <td>12/05/2023</td>
-          <td>75</td>
-          <td>Dabur</td>
-          <td>any</td>
-          <td>25</td>
+        <tr *ngFor="let medicine of medicines">
+          <td>{{ medicine?.productName }}</td>
+          <td>{{ medicine?.packing }}</td>
+          <td>{{ medicine?.batchNo }}</td>
+          <td>{{ medicine?.expiry | amDateFormat: "DD/MM/YYYY" }}</td>
+          <td>{{ medicine?.quantity }}</td>
+          <td>{{ medicine?.brand }}</td>
+          <td>{{ medicine?.categories }}</td>
+          <td>{{ medicine?.mrp }}</td>
           <td>
             <span class="badge badge-success">Avail</span>
           </td>
           <td>
             <div class="update row">
-                <button class="btn btn-sm btn-secondary btn-pill ">Edit</button>
-                <button class="btn btn-sm btn-danger btn-pill"><span class="cil-trash"></span></button>
+              <button class="btn btn-sm btn-secondary btn-pill">Edit</button>
+              <button class="btn btn-sm btn-danger btn-pill" >
+                <span class="cil-trash" (click)="deleteMed(medicine._id)"></span>
+              </button>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
-
   </div>
   <div class="card-footer">
     <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-        <li class="page-item active">
-          <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">4</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-      </ul>
+      <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+      <li class="page-item active">
+        <a class="page-link" href="#">1</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">4</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
   </div>
 </div>
-

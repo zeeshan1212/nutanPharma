@@ -1,172 +1,183 @@
-<div class="card">
-  <div class="card-header">
-    <strong>New Order</strong>
-  </div>
 
-  <div class="card-body">
-    <div class="form-group row" style="margin: 20px;">
-      <div class="col-md-3">
-        <label for="date-input">Order Date</label>
-        <input
-          class="form-control"
-          id="date-input"
-          type="date"
-          name="date-input"
-          placeholder="date"
-        />
+<div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header card-header">
+        <h4 class="modal-title">New Order</h4>
+        <button type="button" class="close" (click)="largeModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </div>
-    <div class="form-group row" style="margin: 20px;" >
-      <div class="form-group col-md-5">
-        <label for="company">Customer Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="company"
-          placeholder="Customer Name"
-        />
+      <div class="modal-body">
+        <div class="form-group row" style="margin: 20px;">
+          <div class="col-md-3">
+            <label for="date-input">Order Date</label>
+            <input
+              class="form-control"
+              id="date-input"
+              type="date"
+              name="date-input"
+              placeholder="date"
+            />
+          </div>
+        </div>
+        <div class="form-group row" style="margin: 20px;" >
+          <div class="form-group col-md-5">
+            <label for="company">Customer Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="company"
+              placeholder="Customer Name"
+            />
+          </div>
+          <div class="form-group col-md-5">
+            <label for="company">Contact</label>
+            <input
+              type="text"
+              class="form-control"
+              id="company"
+              placeholder="Contact"
+            />
+          </div>
+        </div>
+        <div class="table" style="border-bottom: 2px solid grey;">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Rate</th>
+                <th>Available Quantity</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Add</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="form-group">
+                    <select id="select1" name="select1" class="form-control" (change)= "onChange($event)">
+                      <option value = "0">Select Medicine</option>
+                      <option [value]="medicine?._id" *ngFor="let medicine of medicines">{{medicine?.productName}}</option>
+                    </select>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="rate" disabled [(ngModel)] = "rate"/>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="available" disabled [(ngModel)] = "quantity" />
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="quantity" (change)= "onQuant($event)"/>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="total" disabled [(ngModel)] = "total" />
+                  </div>
+                </td>
+                <td>
+                  <Button class="btn btn-success"
+                  (click)="onAdd()"
+                    ><span class="cil-cart"></span
+                  ></Button>
+                </td>
+              </tr>
+              <tr *ngFor="let orderitem of orderList">
+                  <td>{{orderitem?.medicine}}</td>
+                  <td>{{orderitem?.rate}}</td>
+                  <td></td>
+                  <td>{{orderitem?.orderQuantity}}</td>
+                  <td>{{orderitem?.total}}</td>
+                  <td>
+                      <button class="btn btn-danger"><span class="cil-trash"></span></button>
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group row" style="margin:20px;">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="subtotal">Sub Total</label>
+              <input type="text" class="form-control" id="subtotal" disabled [(ngModel)] = "subTotal" />
+            </div>
+            <div class="form-group">
+              <label for="gst">GST</label>
+              <input
+                type="text"
+                class="form-control"
+                id="gst"
+                placeholder="GST %"
+                (change) = "onGst($event)"
+              />
+            </div>
+            <div class="form-group">
+              <label for="total">Total</label>
+              <input type="text" class="form-control" id="total" disabled [(ngModel)] = "gstTotal" />
+            </div>
+            <div class="form-group">
+              <label for="discount">Discount</label>
+              <input
+                type="text"
+                class="form-control"
+                id="discount"
+                placeholder="Discount %"
+                (change) = "onDiscount($event)"
+              />
+            </div>
+            <div class="form-group">
+              <label for="grandtotal">Grand Total</label>
+              <input type="text" class="form-control" id="grangtotal" disabled [(ngModel)] = "grandTotal"/>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="paidamount">Paid Amount</label>
+              <input
+                type="text"
+                class="form-control"
+                id="paidamount"
+                placeholder="Amount"
+              />
+            </div>
+            <div class="form-group">
+              <label for="dueamount">Due Amount</label>
+              <input type="text" class="form-control" id="dueamount" disabled />
+            </div>
+            <div class="form-group">
+              <label for="paymentType">Payment Type</label>
+              <select id="select1" name="select1" class="form-control">
+                <option value="0">Please select</option>
+                <option value="1">Cash</option>
+                <option value="2">Card</option>
+                <option value="3">UPI</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="form-group col-md-5">
-        <label for="company">Contact</label>
-        <input
-          type="text"
-          class="form-control"
-          id="company"
-          placeholder="Contact"
-        />
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary col-md-3">
+          <i class="fa fa-dot-circle-o"></i> Submit
+        </button>
+        <button type="reset" class="btn btn-danger col-md-3">
+          <i class="fa fa-ban"></i> Reset
+        </button>
+        <button type="button" class="btn btn-secondary col-md-3" (click)="largeModal.hide()">Close</button>
       </div>
-    </div>
-    <div class="table" style="border-bottom: 2px solid grey;">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Rate</th>
-            <th>Available Quantity</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th>Add</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="form-group">
-                <select id="select1" name="select1" class="form-control">
-                  <option value="0">Please select</option>
-                  <option value="1">Ranbaxy</option>
-                  <option value="2">Cipla</option>
-                  <option value="3">Cadila</option>
-                </select>
-              </div>
-            </td>
-            <td>
-              <div class="form-group">
-                <input type="text" class="form-control" id="company" disabled />
-              </div>
-            </td>
-            <td>
-              <div class="form-group">
-                <input type="text" class="form-control" id="company" disabled />
-              </div>
-            </td>
-            <td>
-              <div class="form-group">
-                <input type="text" class="form-control" id="company" />
-              </div>
-            </td>
-            <td>
-              <div class="form-group">
-                <input type="text" class="form-control" id="company" disabled />
-              </div>
-            </td>
-            <td>
-              <Button class="btn btn-success"
-                ><span class="cil-cart"></span
-              ></Button>
-            </td>
-          </tr>
-          <tr>
-              <td>Cadila</td>
-              <td>12</td>
-              <td></td>
-              <td>78</td>
-              <td>25</td>
-              <td>
-                  <button class="btn btn-danger"><span class="cil-trash"></span></button>
-              </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="form-group row" style="margin:20px;">
-      <div class="col-md-5">
-        <div class="form-group">
-          <label for="company">Sub Total</label>
-          <input type="text" class="form-control" id="company" disabled />
-        </div>
-        <div class="form-group">
-          <label for="company">GST</label>
-          <input
-            type="text"
-            class="form-control"
-            id="company"
-            placeholder="GST %"
-          />
-        </div>
-        <div class="form-group">
-          <label for="company">Total</label>
-          <input type="text" class="form-control" id="company" disabled />
-        </div>
-        <div class="form-group">
-          <label for="company">Discount</label>
-          <input
-            type="text"
-            class="form-control"
-            id="company"
-            placeholder="Discount %"
-          />
-        </div>
-        <div class="form-group">
-          <label for="company">Grand Total</label>
-          <input type="text" class="form-control" id="company" disabled />
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="form-group">
-          <label for="company">Paid Amount</label>
-          <input
-            type="text"
-            class="form-control"
-            id="company"
-            placeholder="Amount"
-          />
-        </div>
-        <div class="form-group">
-          <label for="company">Due Amount</label>
-          <input type="text" class="form-control" id="company" disabled />
-        </div>
-        <div class="form-group">
-          <label for="company">Payment Type</label>
-          <select id="select1" name="select1" class="form-control">
-            <option value="0">Please select</option>
-            <option value="1">Cash</option>
-            <option value="2">Card</option>
-            <option value="3">UPI</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card-footer">
-    <button type="submit" class="btn btn-primary col-md-3">
-      <i class="fa fa-dot-circle-o"></i> Submit
-    </button>
-    <button type="reset" class="btn btn-danger col-md-3">
-      <i class="fa fa-ban"></i> Reset
-    </button>
-  </div>
-</div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 
 
 <div class="card">
@@ -181,6 +192,9 @@
               <button type="button" class="btn btn-primary btn-pill"><i class="fa fa-search"></i> Search</button>
           </span>
       </div>
+      <button type="button" class="btn btn-pill btn-secondary mr-1 col-md-3" data-toggle="modal" (click)="largeModal.show()">
+        New Order
+      </button>
     </div>
   <table class="table table-striped">
     <thead>

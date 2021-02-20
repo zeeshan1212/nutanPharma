@@ -1,3 +1,93 @@
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header card-header">
+        <h4 class="modal-title">Add New Brand</h4>
+        <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="medicineAddForm" [formGroup]="addBrandForm">
+        <div class="form-group row" style="margin: 20px">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="date-input">Description</label>
+              <input
+                class="form-control"
+                id="date-input"
+                type="text"
+                name="date-input"
+                placeholder="desc"
+                formControlName="desc"
+              />
+            </div>
+            <div class="form-group">
+              <label for="company">Status</label>
+              <select
+                id="select1"
+                name="select1"
+                class="form-control"
+                placeholder ="Select Status"
+                (change)="onChang($event)"
+              >
+                <option value = "0">
+                  Select Status
+                </option>
+                <option [value] = "true">
+                  Available
+                </option>
+                <option [value] = "false">
+                  Not Available
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="company">Brand</label>
+              <input
+                type="text"
+                class="form-control"
+                id="company"
+                placeholder="brand"
+                formControlName="brand"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="company">Other</label>
+              <input
+                type="text"
+                class="form-control"
+                id="MRP"
+                formControlName="other"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button
+          type="submit"
+          class="btn btn-primary col-md-3"
+          (click)="submit()"
+          type="submit"
+          form:submit
+        >
+          <i class="fa fa-dot-circle-o"></i> Add
+        </button>
+        <button type="reset" class="btn btn-danger col-md-3" (click)= "reSet()">
+          <i class="fa fa-ban"></i> Reset
+        </button>
+        <button type="button" class="btn btn-secondary col-md-3" (click)="myModal.hide()">Close</button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
 <div class="card">
     <div class="card-header">
       <h6>Available Brands</h6>
@@ -10,27 +100,36 @@
                   <button type="button" class="btn btn-primary btn-pill"><i class="fa fa-search"></i> Search</button>
               </span>
           </div>
+          <button type="button" class="btn btn-pill btn-secondary mr-1 col-md-3" data-toggle="modal" (click)="myModal.show()">
+            Add New Brand
+          </button>
         </div>
       <table class="table table-striped">
         <thead>
           <tr>
             <th>S. No.</th>
             <th>Brand Name</th>
+            <th>Description</th>
             <th>status</th>
             <th>update</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>12</td>
-            <td>Cadila</td>
+          <tr *ngFor = "let brand of brands; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{brand?.brand}}</td>
+            <td>{{brand?.desc}}</td>
             <td>
-              <span class="badge badge-success">Avail</span>
+              <span class="badge"
+              [class.badge-success]="brand?.status"
+              [class.badge-danger]="!brand?.status"
+              >{{brand?.status?'Available':'NotAvailable'}}</span>
             </td>
             <td>
               <div class="update row">
                   <button class="btn btn-sm btn-secondary btn-pill ">Edit</button>
-                  <button class="btn btn-sm btn-danger btn-pill"><span class="cil-trash"></span></button>
+                  <button class="btn btn-sm btn-danger btn-pill" (click) = "deleteBrands(brand._id)"
+               ><span class="cil-trash"></span></button>
               </div>
             </td>
           </tr>

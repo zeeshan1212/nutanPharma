@@ -18,6 +18,8 @@ export const routes: Routes = [
   {
     path: '404',
     component: P404Component,
+    
+    
     data: {
       title: 'Page 404'
     }
@@ -52,7 +54,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'reports',
-        loadChildren: () => import('./views/medicine/medicine.module').then(m => m.MedicineModule)
+        loadChildren: () => import('./views/reports/reports.module').then(m => m.ReportsModule)
       },
       {
         path: 'orders',
